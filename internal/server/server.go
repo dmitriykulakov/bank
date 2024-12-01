@@ -16,7 +16,6 @@ import (
 
 func Handle(cfg *config.ServerConfig) {
 	router := http.NewServeMux()
-	router.HandleFunc("GET /api/v1/wallet", get)
 	router.HandleFunc("POST /api/v1/wallet", postWallet)
 	router.HandleFunc("GET /api/v1/wallets/{WALLET_UUID}", getWallet)
 	log.Printf(cfg.Address)
