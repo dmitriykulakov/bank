@@ -1,0 +1,19 @@
+version: "3.6"
+services:
+  postgres:
+    env_file:
+      - config.env
+    build: "./internal/database/"
+    restart: "always"
+    environment:
+      POSTGRES_DB: POSTGRES_NAME
+      POSTGRES_USER: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    ports: 
+      - 3350:5432
+
+  golang:
+    build: "./"
+    restart: "always"
+    ports:
+      - 3351:3351
