@@ -1,0 +1,91 @@
+definitions:
+  model.PostRequest:
+    properties:
+      amount:
+        type: integer
+      operationType:
+        type: string
+      walletId:
+        type: string
+    type: object
+  model.RespBalance:
+    properties:
+      balance:
+        type: integer
+    type: object
+  model.Response:
+    properties:
+      err: {}
+    type: object
+info:
+  contact: {}
+  description: This is a bank API on REST API.
+  title: Bank API
+  version: "1.0"
+paths:
+  /api/v1/wallet:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: postWallet
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.PostRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: post_wallet
+      tags:
+      - postWallet
+  /api/v1/wallets/{WALLET_UUID}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: WALLET UUID
+        in: path
+        name: WALLET_UUID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.RespBalance'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: get_wallet
+      tags:
+      - getWallet
+swagger: "2.0"

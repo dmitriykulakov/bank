@@ -42,6 +42,7 @@ func TestPost(t *testing.T) {
 	var balanceNew int
 
 	json.NewDecoder(resp.Body).Decode(&balanceNew)
+	fmt.Println(balance, balanceNew)
 	if balanceNew-balance != 100000 {
 		t.Errorf("Test DEPOSIT: FAIL")
 	} else {
@@ -58,7 +59,7 @@ func TestPost(t *testing.T) {
 		http.Post("http://"+cfg.Address+"/api/v1/wallet", "Apllication/json", req)
 	}
 
-	resp, _ = http.Get("http://" + cfg.Address + "/api/v1/wallets/e0eebc999c0b4ef8bb6d6bb9bd380a11")
+	resp, _ = http.Get("http://" + cfg.Address + "/api/v1/wallets/e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
 
 	json.NewDecoder(resp.Body).Decode(&balance)
 	if balanceNew-balance != 100000 {
@@ -116,4 +117,14 @@ func TestBadRequest(t *testing.T) {
 			t.Logf("Test %d: OK, expected %s, result %s: OK", i+1, r.want, response)
 		}
 	}
+}
+
+func TestGet(t *testing.T) {
+	var cfg = config.NewConfig()
+	resp, err := http.Get("http://" + cfg.Address + "/api/v1/wallets/a0eebc999c0b4ef8bb6d6bb9bd380a11")
+	fmt.Println(err)
+	var response interface{}
+	json.NewDecoder(resp.Body).Decode(&response)
+	fmt.Println(resp.StatusCode)
+	fmt.Println(response)
 }

@@ -15,7 +15,7 @@ import (
 )
 
 var UuidChan = make(chan uuid.UUID)
-var BalanceRespChan = make(chan model.RespBalance)
+var BalanceRespChan = make(chan interface{})
 var PostRequestChan = make(chan *model.PostRequest)
 var PostResponseChan = make(chan model.Response)
 
@@ -56,13 +56,13 @@ func connectToDB(cfg *config.PgConfig) *gorm.DB {
 	return db
 }
 
-func getBalance(client uuid.UUID, db *gorm.DB) model.RespBalance {
+func getBalance(client uuid.UUID, db *gorm.DB) interface{} {
 	var balance []int
 	db.Table("clients").Where("walletId = ?", client).Select("amount").Find(&balance)
 	if len(balance) == 1 {
-		return model.RespBalance{Balance: balance[0], Err: nil}
+		return model.RespBalance{Balance: balance[0]}
 	} else {
-		return model.RespBalance{Balance: 0, Err: fmt.Errorf("the id \"%s\"doesn't exist", client.String())}
+		return model.Response{Err: fmt.Errorf("the id \"%s\"doesn't exist", client.String())}
 	}
 }
 

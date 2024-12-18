@@ -16,7 +16,6 @@ type Client struct {
 
 type RespBalance struct {
 	Balance int
-	Err     error
 }
 
 type Response struct {

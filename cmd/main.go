@@ -15,6 +15,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title Bank API
+// @version 1.0
+// @description This is a bank API on REST API.
+
 func init() {
 	if err := godotenv.Load("config.env"); err != nil {
 		log.Print("No .env file found")
