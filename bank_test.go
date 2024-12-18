@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 	"testing"
 
 	"github.com/google/uuid"
@@ -27,17 +28,21 @@ func TestPost(t *testing.T) {
 
 	json.NewDecoder(resp.Body).Decode(&balance)
 	id, _ := uuid.Parse("e0eebc999c0b4ef8bb6d6bb9bd380a11")
-
+	var wg sync.WaitGroup
 	tmp := model.PostRequest{OperationType: "DEPOSIT", Client: model.Client{WalletId: id, Amount: 100}}
 	for i := 0; i < 1000; i++ {
-		operJson, err := json.Marshal(tmp)
-		if err != nil {
-			log.Fatal(err)
-		}
-		req := bytes.NewReader(operJson)
-		http.Post("http://"+cfg.Address+"/api/v1/wallet", "Apllication/json", req)
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			operJson, err := json.Marshal(tmp)
+			if err != nil {
+				log.Fatal(err)
+			}
+			req := bytes.NewReader(operJson)
+			http.Post("http://"+cfg.Address+"/api/v1/wallet", "Apllication/json", req)
+		}()
 	}
-
+	wg.Wait()
 	resp, _ = http.Get("http://" + cfg.Address + "/api/v1/wallets/e0eebc999c0b4ef8bb6d6bb9bd380a11")
 	var balanceNew int
 
@@ -51,14 +56,18 @@ func TestPost(t *testing.T) {
 
 	tmp = model.PostRequest{OperationType: "WITHDRAW", Client: model.Client{WalletId: id, Amount: 100}}
 	for i := 0; i < 1000; i++ {
-		operJson, err := json.Marshal(tmp)
-		if err != nil {
-			log.Fatal(err)
-		}
-		req := bytes.NewReader(operJson)
-		http.Post("http://"+cfg.Address+"/api/v1/wallet", "Apllication/json", req)
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			operJson, err := json.Marshal(tmp)
+			if err != nil {
+				log.Fatal(err)
+			}
+			req := bytes.NewReader(operJson)
+			http.Post("http://"+cfg.Address+"/api/v1/wallet", "Apllication/json", req)
+		}()
 	}
-
+	wg.Wait()
 	resp, _ = http.Get("http://" + cfg.Address + "/api/v1/wallets/e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
 
 	json.NewDecoder(resp.Body).Decode(&balance)
