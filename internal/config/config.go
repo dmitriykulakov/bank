@@ -24,14 +24,14 @@ type DbConfig struct {
 func NewConfig() *Config {
 	return &Config{
 		ServerConfig: ServerConfig{
-			Address: getEnv("SERVER_ADDRESS", ""),
+			Address: getEnv("SERVER_ADDRESS", "0.0.0.0:3351"),
 		},
 		DbConfig: DbConfig{
-			Host:     getEnv("POSTGRES_HOST", ""),
-			Port:     getEnv("POSTGRES_PORT", ""),
-			Username: getEnv("POSTGRES_USERNAME", ""),
-			Password: getEnv("POSTGRES_PASSWORD", ""),
-			Database: getEnv("POSTGRES_NAME", ""),
+			Host:     getEnv("POSTGRES_HOST", "postgres"),
+			Port:     getEnv("POSTGRES_PORT", "5432"),
+			Username: getEnv("POSTGRES_USERNAME", "kulakov"),
+			Password: getEnv("POSTGRES_PASSWORD", "1234"),
+			Database: getEnv("POSTGRES_NAME", "Bank"),
 		},
 	}
 }
