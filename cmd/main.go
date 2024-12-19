@@ -34,7 +34,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
-	go database.Broadcast(ctx, &wg, &cfg.PgConfig)
+	go database.Broadcast(ctx, &wg, &cfg.DbConfig)
 	go server.Handle(&cfg.ServerConfig)
 
 	wg.Wait()

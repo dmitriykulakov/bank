@@ -6,14 +6,14 @@ import (
 
 type Config struct {
 	ServerConfig
-	PgConfig
+	DbConfig
 }
 
 type ServerConfig struct {
 	Address string
 }
 
-type PgConfig struct {
+type DbConfig struct {
 	Host     string
 	Port     string
 	Username string
@@ -26,7 +26,7 @@ func NewConfig() *Config {
 		ServerConfig: ServerConfig{
 			Address: getEnv("SERVER_ADDRESS", ""),
 		},
-		PgConfig: PgConfig{
+		DbConfig: DbConfig{
 			Host:     getEnv("POSTGRES_HOST", ""),
 			Port:     getEnv("POSTGRES_PORT", ""),
 			Username: getEnv("POSTGRES_USERNAME", ""),
